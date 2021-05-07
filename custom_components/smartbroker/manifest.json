@@ -1,0 +1,11 @@
+{
+  "codeowners": ["@benj-zen"],
+  "domain": "smartbroker",
+  "name": "Smartbroker",
+  "config_flow": true,
+  "documentation": "https://github.com/benj-zen/hass-smartbroker",
+  "issue_tracker": "https://github.com/benj-zen/hass-smartbroker/issues",
+  "requirements": ["beautifulsoup4==4.9.3"],
+  "dependencies": [],
+  "version": "0.1.0"
+}
