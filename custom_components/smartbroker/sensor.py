@@ -127,7 +127,7 @@ class SecuritiesAccountSensor(AccountSensor):
         return "mdi:cash-multiple"
 
     @property
-    def device_state_attributes(self) -> Dict[str, Any]:
+    def extra_state_attributes(self) -> Dict[str, Any]:
         return {
             **{position.name: position.value for position in self._data().positions},
             "Profit/Loss (absolute)": self._data().profit_loss_abs,
