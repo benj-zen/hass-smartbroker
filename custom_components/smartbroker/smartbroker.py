@@ -1,3 +1,5 @@
+import re
+
 from bs4 import BeautifulSoup
 from dataclasses import dataclass
 
@@ -10,6 +12,7 @@ LOGOUT_ENDPOINT = "smartbroker/Logout.xhtml"
 LIST_ACCOUNTS_ENDPOINT = "smartbroker/Finanzuebersicht/"
 LIST_PORTFOLIO_ENDPOINT = "Tradingcenter/Depot/Depotuebersicht/"
 
+csrf_pattern = re.compile(r'<input type="hidden" name="_csrf" value="([a-f0-9]+)" />')
 
 @dataclass
 class Account:
@@ -62,6 +65,8 @@ class Smartbroker:
             r = await self.session.get(BASE_URL + LOGIN_START_ENDPOINT)
             if r.status >= 400:
                 raise ConnectionFailed()
+            match = csrf_pattern.search(await r.text())
+            csrf = match.group(1)
             r = await self.session.post(
                 BASE_URL + LOGIN_ENDPOINT,
                 data={
@@ -69,6 +74,7 @@ class Smartbroker:
                     "campaignIDs_MINIAPP_login": "",
                     "accessNumber": access_number,
                     "identifier": identifier,
+                    "_csrf": csrf
                 },
             )
             if r.status >= 400:
